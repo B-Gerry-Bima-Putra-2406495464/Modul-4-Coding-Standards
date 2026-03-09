@@ -17,28 +17,31 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Payment addPayment(Order order, String method, Map<String, String> paymentData) {
-        String status = "SUCCESS";
-
-        if (method.equals("VOUCHER")) {
-            String voucherCode = paymentData.get("voucherCode");
-            if (voucherCode == null || voucherCode.length() != 16 || !voucherCode.startsWith("ESHOP")) {
-                status = "REJECTED";
-            } else {
-                long digitCount = voucherCode.chars().filter(Character::isDigit).count();
-                if (digitCount != 8) {
-                    status = "REJECTED";
-                }
-            }
-        } else if (method.equals("BANK_TRANSFER")) {
-            String bankName = paymentData.get("bankName");
-            String referenceCode = paymentData.get("referenceCode");
-            if (bankName == null || bankName.isBlank() || referenceCode == null || referenceCode.isBlank()) {
-                status = "REJECTED";
-            }
-        }
-
+        String status = validatePayment(method, paymentData);
         Payment payment = new Payment(UUID.randomUUID().toString(), method, status, paymentData);
         return paymentRepository.save(payment);
+    }
+
+    private String validatePayment(String method, Map<String, String> paymentData) {
+        if (method.equals("VOUCHER")) {
+            return isVoucherValid(paymentData.get("voucherCode")) ? "SUCCESS" : "REJECTED";
+        } else if (method.equals("BANK_TRANSFER")) {
+            return isBankTransferValid(paymentData) ? "SUCCESS" : "REJECTED";
+        }
+        return "SUCCESS";
+    }
+
+    private boolean isVoucherValid(String code) {
+        return code != null &&
+                code.length() == 16 &&
+                code.startsWith("ESHOP") &&
+                code.chars().filter(Character::isDigit).count() == 8;
+    }
+
+    private boolean isBankTransferValid(Map<String, String> data) {
+        String bank = data.get("bankName");
+        String ref = data.get("referenceCode");
+        return bank != null && !bank.isBlank() && ref != null && !ref.isBlank();
     }
 
     @Override
