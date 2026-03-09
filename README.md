@@ -1,33 +1,11 @@
-**MODUL 1 REFFLECTION**
+**MODUL 4 REFFLECTION**
 
-**Reflection 1:**
-Karena ini pertama kali saya memakai java spring boot, pada tutorial kali ini saya mempelajari bagaimana penggunaannya dan ternyata mirip-mirip saja seperti framework-framework yang sudah saya pelajari sebelumnya. Di java spring boot ini menggunakan model, repository sebagai tempat menyimpan model, service untuk menyimpan fungsi, controller untuk menjadi jembatan ke template, dan template yaitu kode html untuk tampilan ke web.
-Dari materi yang diajari pekan sebelumnya yaitu clean code, saya mencoba menerapkannya saat pembuatan fitur baru di delete dan edit, yaitu dengan penamaan variable yang jelas dan flow code yang rapih.
-Diawal pengerjaan saya salah paham dibagian awal saat bagian preparation saya mengira di setiap commit perlu melakukan push. Dan karena kesalahpahaman saya juga, saya melakukan commit dan push ini ke branch main untuk bagian preparation, jadi tidak ada pull request dan merge untuk branch list-product ke branch main.
-Selama proses pengerjaan edit (sebelum pengerjaan fitur delete) saya membuat fitur findById di branch edit, dan setelah fitur edit selesai dan ingin lanjut ke fitur delete, saya juga membutuhkan fitur findById ini, disini saya menyadari bahwa untuk fungsi helper ke fitur lebih baik saya commit terlebih dahulu di branch main atau dibuat sebelum membuat branch edit dan delete ini, karena di tutorial ini ada beberapa fungsi yang saya tulis dua kali di kedua branch baru ini.
-
-**Reflecttion 2:**
-1. Saya merasa pembuatan unit test ini sangat melelahkan dan menjadi salah satu bagian tersulit atau terlama di pengembangan software, tetapi dampak yang dihasilkan sepadan, dengan pembuatan unit test, testing secara manual hampir sedikit diperlukan jadi setiap pembuatan kode baru atau penambahan fitur baru, untuk mengecek kode keseluruhan bisa dengan sekali jalan dan sangat singkat. Untuk membuat Unit test ini pasti memverifikasi program kita juga sangat penting, hal ini bisa dicapai dengan memikirkan segala kondisi kemungkinan yang mungkin terjadi memerlukan proses pemikiran dan diskusi panjang, untuk code coverage saya rasa tidak langsung mengartikan bahwa code kita bebas dari bug, karena code coverage hanya memeriksa apakah test sudah melewatkan suatu baris jadi edge case yang tidak kita include di unit test kita masih bisa terjadi, contoh: unit test dari pembagian yang tidak include eror untuk pembagian 0.
-2. Karena didalam pembuatan CreateProductFunctionalTest saya mengambil rows product, test untuk memverifikasi number of items in the product list akan mirip seperti sebelumnya, yang akan direpresentasikan oleh jumlah elemen dari row yang diambil. Dari aspek cleanliness of the code tentu saja pengulangan kode bukan hal yang kita mau karena melanggar prinsip DRY(dont repeat yourself), dan tentu saja hal ini menurunkan kualitas kode yang membuat class dan jumlah file menjadi banyak padahal isinya sama. Ada beberapa masalah yang berpotensi muncul, salah satunya adalah susah di maintain, misal ingin mengubah driver, code yang diubah jadi lebih banyak, karena itu prinsip DRY ini tidak boleh dilanggar. Untuk solusinya yang saya pikirkan adalah menyatukan class dari kedua test ini lalu membuat setup untuk pengambilan row nya, dari segi readability pun akan meningkat dengan solusi ini. 
-
-**MODUL 2 REFFLECTION**
-
-1. Pada tutorial ini saya menemukan beberapa masalah code quality seperti unused import method yang memiliki lebih dari satu return field yang bisa dibuat final, dan class yang belum memiliki constructor. Selain itu ada juga masalah penamaan variable yang kurang jelas dan perbedaan huruf besar kecil pada template yang menyebabkan error saat deploy.
-Untuk memperbaikinya saya membaca satu per satu warning dari PMD lalu melakukan refactor secara bertahap. Saya menghapus import yang tidak digunakan menyederhanakan method agar lebih rapih menambahkan constructor serta memperbaiki penamaan variable. Saya juga memastikan nama template sesuai dengan controller agar tidak error di server. Dengan proses ini saya menjadi lebih memahami pentingnya clean code agar kode lebih mudah dibaca dan lebih aman saat dijalankan.
-
-2. Menurut saya implementasi ini sudah memenuhi konsep Continuous Integration, karena setiap push atau pull request otomatis menjalankan unit test dan analisis code quality, jadi setiap perubahan kode langsung divalidasi tanpa harus dicek manual, hal ini membuat proses integrasi menjadi lebih aman
-Selain itu konsep Continuous Deployment juga sudah terpenuhi karena setelah merge ke branch main aplikasi langsung terdeploy otomatis ke Koyeb, saya tidak perlu deploy secara manual lagi sehingga proses menjadi lebih cepat dan terstruktur. Pipeline ini membantu mengurangi human error dan membuat pengembangan menjadi lebih efisien
-
-**MODUL 3 REFFLECTION**
-
-1. SRP : Di before solid CarRepository method create() ada logika untuk pembuatan uuid, saya memindahkan logika ini ke CarServiceImpl karena memang tugasnya service, tugas repository hanya sebagai penyimpanan.
-OCP : Di before solid CarRepository method update() pembaruan variable car di ubah satu persatu walaupun sudah menerima parameter object Car, saya merubah agar langsung update data object nya secara langsung, agar jika ada penambahan variable baru tidak perlu mengubah lagi method nya, jadi terbuka untuk ekstensi dan tertutup dari modifikasi.
-LSP : Di before solid CarController meng-extends class ProductController, padahal car controller memiliki routing spesifik ke '/car' jadi tidak bisa menggantikan ProductController, jadi saya mengapus extends di CarController.
-DIP : Di before solid pada CarController pembuatan object carService tidak memanggil interfacenya tetapi langsung implementasinya yang melanggar DIP karena higher level module bergantung ke lower level module, saya mengubah tipe variablenya menjadi CarService yaitu interfacenya.
-
-2. Dari perubahan yang saya lakukan terlihat setelah saya mengimplementasikan prinsip SOLID kode menjadi lebih mudah dibaca, lebih mudah di extend, setiap class dan method melakukan tugasnya sesuai peran jadi tidak tercampur aduk untuk memahami flow code nya.
-
-3. jika tidak ada penerapan SRP (logika UUID) kode tercampur aduk jadi susah untuk memahami flow code nya dan melakukan pembaruan. Jika tidak menerapkan OCP (method update()) jika ingin menambahkan varuable baru perlu mengubah kode di CarRepository juga. Jika tidak menerapkan LSP bisa memicu bug dimana endpoint Product bisa diakses lewat routing Car. Jika tidak menerapkan DIP membuat pengujian menjadi sulit karena tidak bisa melakukan mock object.
-
+1. Ya, sangat berguna. Dengan membuat tes terlebih dahulu, saya dipaksa memahami kebutuhan fitur secara detail sebelum menulis baris kode pertama. Ini mengurangi bug karena semua skenario (Happy/Unhappy) sudah diuji.
+2. Prinsip F.I.R.S.T:
+   - Fast: Tes berjalan dalam hitungan milidetik.
+   - Independent: Setiap tes tidak bergantung pada hasil tes lain.
+   - Repeatable: Tes memberikan hasil yang sama di lingkungan manapun.
+   - Self-validating: Hasil tes jelas (Pass/Fail) tanpa perlu pengecekan manual.
+   - Timely: Tes dibuat tepat sebelum kode implementasi ditulis.
 
 
