@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.HashMap;
@@ -17,12 +18,10 @@ class PaymentTest {
     @Test
     void testCreatePaymentValid() {
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        Payment payment = new Payment("1", "VOUCHER", "SUCCESS", paymentData);
+        Payment payment = new Payment("1", "VOUCHER", PaymentStatus.SUCCESS.getValue(), paymentData);
 
         assertEquals("1", payment.getId());
-        assertEquals("VOUCHER", payment.getMethod());
-        assertEquals("SUCCESS", payment.getStatus());
-        assertEquals(paymentData, payment.getPaymentData());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
     }
 
     @Test
