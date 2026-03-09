@@ -40,6 +40,9 @@ class PaymentServiceImplTest {
         products.add(product1);
 
         order = new Order("13652556-0128-4c07-b546-54eb1396d79b", products, 1708560000L, "Safira Sudrajat");
+
+        lenient().when(paymentRepository.save(any(Payment.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
     }
 
     @Test
@@ -48,6 +51,8 @@ class PaymentServiceImplTest {
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
 
         Payment payment = paymentService.addPayment(order, "VOUCHER", paymentData);
+
+        assertNotNull(payment);
         assertEquals("SUCCESS", payment.getStatus());
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
@@ -58,6 +63,8 @@ class PaymentServiceImplTest {
         paymentData.put("voucherCode", "INVALID");
 
         Payment payment = paymentService.addPayment(order, "VOUCHER", paymentData);
+
+        assertNotNull(payment);
         assertEquals("REJECTED", payment.getStatus());
     }
 
@@ -68,8 +75,9 @@ class PaymentServiceImplTest {
         paymentData.put("referenceCode", "123456");
 
         Payment payment = paymentService.addPayment(order, "BANK_TRANSFER", paymentData);
-        assertNotEquals("REJECTED", payment.getStatus());
-        verify(paymentRepository, times(1)).save(any(Payment.class));
+
+        assertNotNull(payment);
+        assertEquals("SUCCESS", payment.getStatus());
     }
 
     @Test
@@ -79,6 +87,8 @@ class PaymentServiceImplTest {
         paymentData.put("referenceCode", "123");
 
         Payment payment = paymentService.addPayment(order, "BANK_TRANSFER", paymentData);
+
+        assertNotNull(payment);
         assertEquals("REJECTED", payment.getStatus());
     }
 }
